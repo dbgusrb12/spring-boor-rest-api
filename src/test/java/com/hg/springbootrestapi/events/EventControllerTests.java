@@ -30,8 +30,8 @@ public class EventControllerTests {
     @Autowired
     ObjectMapper objectMapper;
 
-    @DisplayName("이벤트 생성 테스트 성공")
     @Test
+    @DisplayName("정상적으로 이벤트를 생성하는 테스트")
     void createEvent() throws Exception {
         EventDto event = EventDto.builder()
             .name("Spring")
@@ -60,8 +60,8 @@ public class EventControllerTests {
             .andExpect(jsonPath("eventStatus").value(EventStatus.DRAFT.name()));
     }
 
-    @DisplayName("이벤트 생성 테스트 입력값 이외의 파라미터를 입력 시 Bad Request")
     @Test
+    @DisplayName("이벤트 생성 시 입력 받을 수 없는 값을 사용한 경우에 Bad Request 에러 발생하는 테스트")
     void createEvent_Bad_Request() throws Exception {
         Event event = Event.builder()
             .id(100)
@@ -88,8 +88,8 @@ public class EventControllerTests {
             .andExpect(status().isBadRequest());
     }
 
-    @DisplayName("이벤트 생성 테스트 입력값이 없을 때 Bad Request")
     @Test
+    @DisplayName("이벤트 생성 시 입력 값이 비어있는 경우에 Bad Request 에러가 발생하는 테스트")
     void createEvent_Bad_Request_Empty_Input() throws Exception {
         EventDto eventDto = EventDto.builder().build();
 
@@ -100,8 +100,8 @@ public class EventControllerTests {
             .andExpect(status().isBadRequest());
     }
 
-    @DisplayName("이벤트 생성 테스트 입력값을 제대로 보내지 않았을 때 Bad Request")
     @Test
+    @DisplayName("이벤트 생성 시 입력 값이 잘못된 경우에 Bad Request 에러가 발생하는 테스트")
     void createEvent_Bad_Request_Wrong_Input() throws Exception {
         EventDto eventDto = EventDto.builder()
             .name("Spring")
