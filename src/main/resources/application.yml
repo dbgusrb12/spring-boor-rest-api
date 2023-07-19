@@ -1,0 +1,4 @@
+spring:
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true # deserialization 시 unknown properties 가 존재 할 때 400 에러 발생
