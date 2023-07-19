@@ -88,10 +88,33 @@ public class EventControllerTests {
             .andExpect(status().isBadRequest());
     }
 
-    @DisplayName("이벤트 생성 테스트 입력값을 제대로 보내지 않았을 때 Bad Request")
+    @DisplayName("이벤트 생성 테스트 입력값이 없을 때 Bad Request")
     @Test
     void createEvent_Bad_Request_Empty_Input() throws Exception {
         EventDto eventDto = EventDto.builder().build();
+
+        mockMvc.perform(post("/api/events/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(eventDto)))
+            .andDo(print())
+            .andExpect(status().isBadRequest());
+    }
+
+    @DisplayName("이벤트 생성 테스트 입력값을 제대로 보내지 않았을 때 Bad Request")
+    @Test
+    void createEvent_Bad_Request_Wrong_Input() throws Exception {
+        EventDto eventDto = EventDto.builder()
+            .name("Spring")
+            .description("REST API Development with Spring")
+            .beginEnrollmentDateTime(LocalDateTime.of(2023, 7, 19, 21, 59))
+            .closeEnrollmentDateTime(LocalDateTime.of(2023, 7, 18, 21, 59))
+            .beginEventDateTime(LocalDateTime.of(2023, 7, 20, 21, 59))
+            .endEventDateTime(LocalDateTime.of(2023, 7, 19, 21, 59))
+            .basePrice(10000)
+            .maxPrice(200)
+            .limitOfEnrollment(100)
+            .location("강남역")
+            .build();
 
         mockMvc.perform(post("/api/events/")
                 .contentType(MediaType.APPLICATION_JSON)
