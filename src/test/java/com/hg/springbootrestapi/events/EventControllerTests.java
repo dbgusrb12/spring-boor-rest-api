@@ -60,7 +60,7 @@ public class EventControllerTests {
             .andExpect(jsonPath("eventStatus").value(EventStatus.DRAFT.name()));
     }
 
-    @DisplayName("이벤트 생성 테스트 입력값 이외의 파라미터를 입력 시 bad request")
+    @DisplayName("이벤트 생성 테스트 입력값 이외의 파라미터를 입력 시 Bad Request")
     @Test
     void createEvent_Bad_Request() throws Exception {
         Event event = Event.builder()
@@ -84,6 +84,18 @@ public class EventControllerTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaTypes.HAL_JSON)
                 .content(objectMapper.writeValueAsString(event)))
+            .andDo(print())
+            .andExpect(status().isBadRequest());
+    }
+
+    @DisplayName("이벤트 생성 테스트 입력값을 제대로 보내지 않았을 때 Bad Request")
+    @Test
+    void createEvent_Bad_Request_Empty_Input() throws Exception {
+        EventDto eventDto = EventDto.builder().build();
+
+        mockMvc.perform(post("/api/events/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(eventDto)))
             .andDo(print())
             .andExpect(status().isBadRequest());
     }
